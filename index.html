@@ -13,46 +13,44 @@
       canvas.width = document.documentElement.clientWidth
       canvas.height = document.documentElement.clientHeight
       let ctx = canvas.getContext("2d")
-      ctx.fillStyle = "black"
+      ctx.strokeStyle = "black"
 
-      let paiting = false
+      ctx.lineWidth = "10"
+
+      ctx.lineCap = "round"
+
+      let painting = false
+
+      let last
       var isTouch = "ontouchstart" in document.documentElement
       if (isTouch === true) {
+        canvas.ontouchstart = (e) => {
+          last = [e.touches[0].clientX, e.touches[0].clientY]
+        }
         canvas.ontouchmove = (e) => {
           ctx.beginPath()
-          console.log(e)
-          ctx.arc(e.touches[0].clientX, e.touches[0].clientY, 5, 0, 2 * Math.PI)
-
-          ctx.fill()
+          ctx.moveTo(last[0], last[1])
+          ctx.lineTo(e.touches[0].clientX, e.touches[0].clientY)
+          last = [e.touches[0].clientX, e.touches[0].clientY]
+          ctx.stroke()
         }
       } else {
-        canvas.onmousedown = () => {
-          paiting = true
+        canvas.onmousedown = (e) => {
+          painting = true
+          last = [e.clientX, e.clientY]
         }
         canvas.onmousemove = (e) => {
-          if (paiting === true) {
+          if (painting === true) {
             ctx.beginPath()
-            ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
-            ctx.fill()
+            ctx.moveTo(last[0], last[1])
+            ctx.lineTo(e.clientX, e.clientY)
+            last = [e.clientX, e.clientY]
+            ctx.stroke()
           }
         }
         canvas.onmouseup = () => {
-          paiting = false
+          painting = false
         }
-      }
-      canvas.onmousedown = () => {
-        paiting = true
-      }
-      canvas.onmousemove = (e) => {
-        if (paiting === true) {
-          ctx.beginPath()
-          ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
-          ctx.stroke()
-          ctx.fill()
-        }
-      }
-      canvas.onmouseup = () => {
-        paiting = false
       }
     </script>
   </body>
