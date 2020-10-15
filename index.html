@@ -14,7 +14,32 @@
       canvas.height = document.documentElement.clientHeight
       let ctx = canvas.getContext("2d")
       ctx.fillStyle = "black"
+
       let paiting = false
+      var isTouch = "ontouchstart" in document.documentElement
+      if (isTouch === true) {
+        canvas.ontouchmove = (e) => {
+          ctx.beginPath()
+          console.log(e)
+          ctx.arc(e.touches[0].clientX, e.touches[0].clientY, 5, 0, 2 * Math.PI)
+
+          ctx.fill()
+        }
+      } else {
+        canvas.onmousedown = () => {
+          paiting = true
+        }
+        canvas.onmousemove = (e) => {
+          if (paiting === true) {
+            ctx.beginPath()
+            ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
+            ctx.fill()
+          }
+        }
+        canvas.onmouseup = () => {
+          paiting = false
+        }
+      }
       canvas.onmousedown = () => {
         paiting = true
       }
@@ -24,8 +49,6 @@
           ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
           ctx.stroke()
           ctx.fill()
-        } else {
-          console.log("什么都不做")
         }
       }
       canvas.onmouseup = () => {
