@@ -7,20 +7,29 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="canvas"></div>
+    <canvas id="canvas"></canvas>
     <script>
-      canvas.onclick = (e) => {
-        let div = document.createElement("div")
-        canvas.appendChild(div)
-        div.style.position = "absolute"
-        div.style.left = e.clientX + "px"
-        div.style.top = e.clientY + "px"
-        div.style.width = "10px"
-        div.style.height = "10px"
-        div.style.background = "blue"
-        div.style.marginLeft = "-3px"
-        div.style.marginTop = "-3px"
-        div.style.borderRadius = "50%"
+      let canvas = document.getElementById("canvas")
+      canvas.width = document.documentElement.clientWidth
+      canvas.height = document.documentElement.clientHeight
+      let ctx = canvas.getContext("2d")
+      ctx.fillStyle = "black"
+      let paiting = false
+      canvas.onmousedown = () => {
+        paiting = true
+      }
+      canvas.onmousemove = (e) => {
+        if (paiting === true) {
+          ctx.beginPath()
+          ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
+          ctx.stroke()
+          ctx.fill()
+        } else {
+          console.log("什么都不做")
+        }
+      }
+      canvas.onmouseup = () => {
+        paiting = false
       }
     </script>
   </body>
