@@ -3,3 +3,43 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  position: relative;
+}
+canvas {
+  display: block;
+}
+span {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: red;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+.blue {
+  top: 60px;
+  left: 20px;
+  background-color: blue;
+}
+.yellow {
+  top: 100px;
+  left: 20px;
+  background-color: yellow;
+}
+.green {
+  top: 140px;
+  left: 20px;
+  background-color: green;
+}
+.black {
+  top: 180px;
+  left: 20px;
+  background-color: black;
+}
+.icon-clean {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}

@@ -5,58 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>画板</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://at.alicdn.com/t/font_2407513_73ekegsnj0l.css"
+    />
   </head>
   <body>
     <canvas id="canvas"></canvas>
+    <span class="red"></span>
+    <span class="black"></span>
+    <span class="blue"></span>
+    <span class="yellow"></span>
+    <span class="green"></span>
+    <div class="iconfont icon-clean"></div>
     <script>
-      let canvas = document.getElementById("canvas")
-      canvas.width = document.documentElement.clientWidth
-      canvas.height = document.documentElement.clientHeight
-      let ctx = canvas.getContext("2d")
-      ctx.strokeStyle = "black"
+      let div = document.querySelector("div");
+      let canvas = document.getElementById("canvas");
+      let black = document.querySelector(".black");
+      let red = document.querySelector(".red");
+      let blue = document.querySelector(".blue");
+      let yellow = document.querySelector(".yellow");
+      let green = document.querySelector(".green");
+      canvas.width = document.documentElement.clientWidth;
+      canvas.height = document.documentElement.clientHeight;
+      let ctx = canvas.getContext("2d");
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = "10";
+      ctx.lineCap = "round";
+      let painting = false;
+      const click = (color) => {
+        color.onclick = () => {
+          ctx.strokeStyle = `${color.classList}`;
+          console.log(`${color.classList}`);
+        };
+      };
+      click(red);
+      click(yellow);
+      click(blue);
+      click(green);
+      click(black);
+      div.onclick = () => {
+        ctx.clearRect(
+          0,
+          0,
+          document.documentElement.clientWidth,
+          document.documentElement.clientHeight
+        );
+      };
 
-      ctx.lineWidth = "10"
-
-      ctx.lineCap = "round"
-
-      let painting = false
       document.body.addEventListener(
         "touchmove",
         function (e) {
-          e.preventDefault() //阻止默认的处理方式(阻止下拉滑动的效果)
+          e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
         },
-        { passive: false }
-      )
-      let last
-      var isTouch = "ontouchstart" in document.documentElement
+        { passive: false } //passive 参数不能省略，用来兼容ios和android
+      );
+      let last;
+      var isTouch = "ontouchstart" in document.documentElement;
       if (isTouch === true) {
         canvas.ontouchstart = (e) => {
-          last = [e.touches[0].clientX, e.touches[0].clientY]
-        }
+          last = [e.touches[0].clientX, e.touches[0].clientY];
+        };
         canvas.ontouchmove = (e) => {
-          ctx.beginPath()
-          ctx.moveTo(last[0], last[1])
-          ctx.lineTo(e.touches[0].clientX, e.touches[0].clientY)
-          last = [e.touches[0].clientX, e.touches[0].clientY]
-          ctx.stroke()
-        }
+          ctx.beginPath();
+          ctx.moveTo(last[0], last[1]);
+          ctx.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+          last = [e.touches[0].clientX, e.touches[0].clientY];
+          ctx.stroke();
+        };
       } else {
         canvas.onmousedown = (e) => {
-          painting = true
-          last = [e.clientX, e.clientY]
-        }
+          painting = true;
+          last = [e.clientX, e.clientY];
+        };
         canvas.onmousemove = (e) => {
           if (painting === true) {
-            ctx.beginPath()
-            ctx.moveTo(last[0], last[1])
-            ctx.lineTo(e.clientX, e.clientY)
-            last = [e.clientX, e.clientY]
-            ctx.stroke()
+            ctx.beginPath();
+            ctx.moveTo(last[0], last[1]);
+            ctx.lineTo(e.clientX, e.clientY);
+            last = [e.clientX, e.clientY];
+            ctx.stroke();
+            ctx.save();
           }
-        }
+        };
         canvas.onmouseup = () => {
-          painting = false
-        }
+          painting = false;
+        };
       }
     </script>
   </body>
